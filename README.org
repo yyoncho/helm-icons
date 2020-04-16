@@ -1,0 +1,19 @@
+* Integration between helm and treemacs icons.
+
+  [[file:images/treemacs-icons.gif]]
+
+** Configuration
+*** Melpa (TBD)
+*** Manual
+    Make sure that you have both =helm= and =treemacs= installed clone the repo and put it on your path.
+
+    #+BEGIN_SRC emacs-lisp
+    (with-eval-after-load 'helm
+      (helm-treemacs-icons-enable))
+    #+END_SRC
+** Supported commands:
+    - =helm-recentf=
+    - =helm-mini=
+    - =helm-find-file=
+    - =helm-locate=
+    - =helm-buffers-list=
