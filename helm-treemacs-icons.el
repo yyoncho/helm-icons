@@ -93,10 +93,11 @@ SOURCE is already created `helm' source."
       (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-buffers-add-icon source)))
 
 
-  (with-eval-after-load 'helm-for-files
+  (with-eval-after-load 'helm-files
     (cl-defmethod helm-setup-user-source :after ((source helm-source-ffiles))
-      (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-files-add-icons source))
+      (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-files-add-icons source)))
 
+  (with-eval-after-load 'helm-for-files
     (cl-defmethod helm-setup-user-source :after ((source helm-locate-source))
       (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-files-add-icons source))
 
