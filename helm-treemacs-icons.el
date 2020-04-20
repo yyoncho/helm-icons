@@ -30,6 +30,7 @@
 
 (require 'treemacs-themes)
 (require 'treemacs-icons)
+(require 'dash)
 
 (defcustom helm-treemacs-icons-mode->icon
   '((dired-mode . dir-open)
@@ -85,7 +86,7 @@ CANDIDATES is the list of candidates."
   ""
   (let ((result (apply orig name class args)))
     (cl-case class
-      ((helm-recentf-source helm-source-ffiles helm-locate-source ;; helm-fasd-source
+      ((helm-recentf-source helm-source-ffiles helm-locate-source helm-fasd-source
                             )
        (helm-treemacs-icons-add-transformer
         #'helm-treemacs-icons-files-add-icons
@@ -94,13 +95,14 @@ CANDIDATES is the list of candidates."
        (helm-treemacs-icons-add-transformer
         #'helm-treemacs-icons-buffers-add-icon
         result)))
-
     (cond
-     ((or (string= name "Projectile files")
-          (string= name "Projectile projects")
-          (string= name "Projectile directories")
-          (string= name "Projectile recent files")
-          (string= name "Projectile files in current Dired buffer"))
+     ((or (-contains? '("Projectile files"
+                        "Projectile projects"
+                        "Projectile directories"
+                        "Projectile recent files"
+                        "Projectile files in current Dired buffer"
+                        "Elisp libraries (Scan)")
+                      name))
       (helm-treemacs-icons-add-transformer
        #'helm-treemacs-icons-files-add-icons
        result)))

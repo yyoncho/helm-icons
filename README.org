@@ -16,6 +16,7 @@
     - =helm-recentf=
     - =helm-mini=
     - =helm-find-file=
-    - =helm-locate=
     - =helm-buffers-list=
+    - =helm-locate=
     - =helm-fasd=
+    - =helm-projectile-*=
