@@ -5,11 +5,12 @@
 ** Configuration
 *** Melpa (TBD)
 *** Manual
-    Make sure that you have both =helm= and =treemacs= installed clone the repo and put it on your path.
+    Make sure that you have both =helm= and =treemacs= installed clone the repo
+    and put it on your path. Make sure that the enable call is performed before
+    loading =helm=.
 
     #+BEGIN_SRC emacs-lisp
-    (with-eval-after-load 'helm
-      (helm-treemacs-icons-enable))
+    (helm-treemacs-icons-enable)
     #+END_SRC
 ** Supported commands:
     - =helm-recentf=
@@ -17,3 +18,4 @@
     - =helm-find-file=
     - =helm-locate=
     - =helm-buffers-list=
+    - =helm-fasd=

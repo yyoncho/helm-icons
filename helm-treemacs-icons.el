@@ -67,14 +67,6 @@ CANDIDATES is the list of candidates."
         candidates))
 
 (defun helm-treemacs-icons-add-transformer (fn source)
-  "Add FN to `filtered-candidate-transformer' slot of SOURCE."
-  (setf (slot-value source 'filtered-candidate-transformer)
-        (-uniq (append
-                (-let [value (slot-value source 'filtered-candidate-transformer)]
-                  (if (seqp value) value (list value)))
-                (list fn)))))
-
-(defun helm-treemacs-icons-add-transformer-created-source (fn source)
   "Add FN to `filtered-candidate-transformer' slot of SOURCE.
 SOURCE is already created `helm' source."
   (setf (alist-get 'filtered-candidate-transformer source)
@@ -83,30 +75,24 @@ SOURCE is already created `helm' source."
                   (if (seqp value) value (list value)))
                 (list fn)))))
 
+(defun helm-treemacs-icons--make (orig name class &rest args)
+  (let ((result (apply orig name class args)))
+    (cl-case class
+      ((helm-recentf-source helm-source-ffiles helm-locate-source helm-fasd-source)
+       (helm-treemacs-icons-add-transformer
+        #'helm-treemacs-icons-files-add-icons
+        result))
+      ((helm-source-buffers)
+       (helm-treemacs-icons-add-transformer
+        #'helm-treemacs-icons-buffers-add-icon
+        result)))
+    result))
+
 ;;;###autoload
 (defun helm-treemacs-icons-enable ()
   "Enable `helm-treemacs-icons'"
   (interactive)
-
-  (with-eval-after-load 'helm-buffers
-    (cl-defmethod helm-setup-user-source :after ((source helm-source-buffers))
-      (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-buffers-add-icon source)))
-
-
-  (with-eval-after-load 'helm-files
-    (cl-defmethod helm-setup-user-source :after ((source helm-source-ffiles))
-      (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-files-add-icons source)))
-
-  (with-eval-after-load 'helm-for-files
-    (cl-defmethod helm-setup-user-source :after ((source helm-locate-source))
-      (helm-treemacs-icons-add-transformer #'helm-treemacs-icons-files-add-icons source))
-
-    (helm-treemacs-icons-add-transformer-created-source
-     #'helm-treemacs-icons-files-add-icons
-     helm-source-recentf))
-
-  (with-eval-after-load 'helm-locate-library
-    (helm-treemacs-icons-add-transformer-created-source #'helm-treemacs-icons-files-add-icons helm-source-locate)))
+  (advice-add 'helm-make-source :around #'helm-treemacs-icons--make))
 
 (provide 'helm-treemacs-icons)
 ;;; helm-treemacs-icons.el ends here
