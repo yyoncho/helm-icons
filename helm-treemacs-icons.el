@@ -3,8 +3,10 @@
 ;; Copyright (C) 2020  Ivan Yonchovski
 
 ;; Author: Ivan Yonchovski <yyoncho@gmail.com>
-;; Keywords:
+;; Keywords: convenience
 
+;; Version: 0.1
+;; URL: https://github.com/yyoncho/helm-treemacs-icons
 ;; Package-Requires: ((emacs "25.1") (dash "2.14.1") (f "0.20.0") (treemacs "2.7"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -22,7 +24,7 @@
 
 ;;; Commentary:
 
-;;
+;; helm -> treemacs-icons integration
 
 ;;; Code:
 
@@ -40,7 +42,7 @@
   (treemacs-get-icon-value ext nil (treemacs-theme->name (treemacs-current-theme))))
 
 (defun helm-treemacs-icons-buffers-add-icon (candidates _source)
-  "Add icon to buffer source.
+  "Add icon to buffers source.
 CANDIDATES is the list of candidates."
   (-map (-lambda ((display . buffer))
           (cons (concat
@@ -57,18 +59,22 @@ CANDIDATES is the list of candidates."
         candidates))
 
 (defun helm-treemacs-icons-files-add-icons (candidates _source)
-  (-map (-lambda ((display . file-name))
-          (cons (concat (cond
-                         ((f-dir? file-name) (helm-treemacs-icons--get-icon 'dir-open))
-                         ((helm-treemacs-icons--get-icon (f-ext file-name)))
-                         ((helm-treemacs-icons--get-icon 'fallback)))
-                        display)
-                file-name))
+  "Add icon to files source.
+CANDIDATES is the list of candidates."
+  (-map (-lambda (candidate)
+          (-let [(display . file-name) (if (listp candidate)
+                                           candidate
+                                         (cons candidate candidate))]
+            (cons (concat (cond
+                           ((f-dir? file-name) (helm-treemacs-icons--get-icon 'dir-open))
+                           ((helm-treemacs-icons--get-icon (f-ext file-name)))
+                           ((helm-treemacs-icons--get-icon 'fallback)))
+                          display)
+                  file-name)))
         candidates))
 
 (defun helm-treemacs-icons-add-transformer (fn source)
-  "Add FN to `filtered-candidate-transformer' slot of SOURCE.
-SOURCE is already created `helm' source."
+  "Add FN to `filtered-candidate-transformer' slot of SOURCE."
   (setf (alist-get 'filtered-candidate-transformer source)
         (-uniq (append
                 (-let [value (alist-get 'filtered-candidate-transformer source)]
@@ -76,16 +82,28 @@ SOURCE is already created `helm' source."
                 (list fn)))))
 
 (defun helm-treemacs-icons--make (orig name class &rest args)
+  ""
   (let ((result (apply orig name class args)))
     (cl-case class
-      ((helm-recentf-source helm-source-ffiles helm-locate-source helm-fasd-source)
+      ((helm-recentf-source helm-source-ffiles helm-locate-source ;; helm-fasd-source
+                            )
        (helm-treemacs-icons-add-transformer
         #'helm-treemacs-icons-files-add-icons
         result))
-      ((helm-source-buffers)
+      ((helm-source-buffers helm-source-projectile-buffer)
        (helm-treemacs-icons-add-transformer
         #'helm-treemacs-icons-buffers-add-icon
         result)))
+
+    (cond
+     ((or (string= name "Projectile files")
+          (string= name "Projectile projects")
+          (string= name "Projectile directories")
+          (string= name "Projectile recent files")
+          (string= name "Projectile files in current Dired buffer"))
+      (helm-treemacs-icons-add-transformer
+       #'helm-treemacs-icons-files-add-icons
+       result)))
     result))
 
 ;;;###autoload
