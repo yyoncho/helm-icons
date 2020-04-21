@@ -83,7 +83,9 @@ CANDIDATES is the list of candidates."
                 (list fn)))))
 
 (defun helm-treemacs-icons--make (orig name class &rest args)
-  ""
+  "The advice over `helm-make-source'.
+ORIG is the original function.
+NAME, CLASS and ARGS are the original params."
   (let ((result (apply orig name class args)))
     (cl-case class
       ((helm-recentf-source helm-source-ffiles helm-locate-source helm-fasd-source
