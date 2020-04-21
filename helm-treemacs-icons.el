@@ -98,13 +98,14 @@ NAME, CLASS and ARGS are the original params."
         #'helm-treemacs-icons-buffers-add-icon
         result)))
     (cond
-     ((or (-contains? '("Projectile files"
-                        "Projectile projects"
-                        "Projectile directories"
-                        "Projectile recent files"
-                        "Projectile files in current Dired buffer"
-                        "Elisp libraries (Scan)")
-                      name))
+     ((or (-any? (lambda (source-name) (s-match source-name name))
+                 '("Projectile files"
+                   "Projectile projects"
+                   "Projectile directories"
+                   "Projectile recent files"
+                   "Projectile files in current Dired buffer"
+                   "dired-do-rename.*"
+                   "Elisp libraries (Scan)")))
       (helm-treemacs-icons-add-transformer
        #'helm-treemacs-icons-files-add-icons
        result)))
