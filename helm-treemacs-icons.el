@@ -32,11 +32,17 @@
 (require 'treemacs-icons)
 (require 'dash)
 
+
+(defgroup helm-treemacs-icons nil
+  "Helm treemacs icons."
+  :group 'helm)
+
 (defcustom helm-treemacs-icons-mode->icon
   '((dired-mode . dir-open)
     (emacs-lisp-mode . "el")
     (spacemacs-buffer-mode . "el"))
-  "Lookup emacs mode -> `treemacs' icon key.")
+  "Lookup Emacs mode -> `treemacs' icon key."
+  :type 'alist)
 
 (defun helm-treemacs-icons--get-icon (ext)
   "Get icon for EXT."
@@ -113,7 +119,7 @@ NAME, CLASS and ARGS are the original params."
 
 ;;;###autoload
 (defun helm-treemacs-icons-enable ()
-  "Enable `helm-treemacs-icons'"
+  "Enable `helm-treemacs-icons'."
   (interactive)
   (advice-add 'helm-make-source :around #'helm-treemacs-icons--make))
 
