@@ -38,7 +38,7 @@
   :group 'helm)
 
 (defcustom helm-treemacs-icons-mode->icon
-  '((dired-mode . dir-open)
+  '((dired-mode . dir-closed)
     (emacs-lisp-mode . "el")
     (spacemacs-buffer-mode . "el"))
   "Lookup Emacs mode -> `treemacs' icon key."
@@ -73,7 +73,7 @@ CANDIDATES is the list of candidates."
                                            candidate
                                          (cons candidate candidate))]
             (cons (concat (cond
-                           ((f-dir? file-name) (helm-treemacs-icons--get-icon 'dir-open))
+                           ((f-dir? file-name) (helm-treemacs-icons--get-icon 'dir-closed))
                            ((helm-treemacs-icons--get-icon (f-ext file-name)))
                            ((helm-treemacs-icons--get-icon 'fallback)))
                           display)
