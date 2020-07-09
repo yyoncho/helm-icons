@@ -1,4 +1,4 @@
-* Integration between helm and treemacs icons.
+* helm icons
 
   [[file:images/treemacs-icons.gif]]
 
@@ -10,7 +10,7 @@
     loading =helm=.
 
     #+BEGIN_SRC emacs-lisp
-    (helm-treemacs-icons-enable)
+    (helm-icons-enable)
     #+END_SRC
 ** Supported commands:
     - =helm-recentf=
@@ -20,3 +20,5 @@
     - =helm-locate=
     - =helm-fasd=
     - =helm-projectile-*=
+
+** all-the-icons (TBD)
