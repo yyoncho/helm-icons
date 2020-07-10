@@ -31,6 +31,7 @@
 (require 'treemacs-themes)
 (require 'treemacs-icons)
 (require 'dash)
+(require 'seq)
 
 (defgroup helm-icons nil
   "Helm treemacs icons."
