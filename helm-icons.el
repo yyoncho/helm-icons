@@ -120,7 +120,8 @@ NAME, CLASS and ARGS are the original params."
 (defun helm-icons-enable ()
   "Enable `helm-icons'."
   (interactive)
-  (advice-add 'helm-make-source :around #'helm-icons--make))
+  (advice-add 'helm-make-source :around #'helm-icons--make)
+  (treemacs--setup-icon-background-colors))
 
 (provide 'helm-icons)
 ;;; helm-icons.el ends here
