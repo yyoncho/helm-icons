@@ -3,6 +3,7 @@
 ;; Copyright (C) 2020  Ivan Yonchovski
 
 ;; Author: Ivan Yonchovski <yyoncho@gmail.com>
+;; Contributor: Ellis Kenyő <me@elken.dev>
 ;; Keywords: convenience
 
 ;; Version: 0.1
@@ -24,12 +25,10 @@
 
 ;;; Commentary:
 
-;; This package plugs icons into `helm' standart functions.
+;; This package plugs icons into `helm' standard functions.
 
 ;;; Code:
 
-(require 'treemacs-themes)
-(require 'treemacs-icons)
 (require 'dash)
 (require 'seq)
 
@@ -44,9 +43,18 @@
   "Lookup Emacs mode -> `treemacs' icon key."
   :type '(alist :key-type symbol :value-type sexp))
 
+(defcustom helm-icons-provider
+  'all-the-icons
+  "Provider to load symbols from."
+  :type 'symbol
+  :group 'helm)
+
 (defun helm-icons--get-icon (ext)
   "Get icon for EXT."
-  (treemacs-get-icon-value ext nil (treemacs-theme->name (treemacs-current-theme))))
+  (cond ((eq helm-icons-provider 'all-the-icons)
+         (concat (all-the-icons-icon-for-file (concat "icon." ext)) " "))
+        ((eq helm-icons-provider 'treemacs)
+         (treemacs-get-icon-value ext nil (treemacs-theme->name (treemacs-current-theme))))))
 
 (defun helm-icons-buffers-add-icon (candidates _source)
   "Add icon to buffers source.
@@ -116,12 +124,23 @@ NAME, CLASS and ARGS are the original params."
        result)))
     result))
 
+(defun helm-icons--setup ()
+  "Setup icons based on which provider is set."
+  (cond ((eq helm-icons-provider 'all-the-icons)
+         (require 'all-the-icons)
+         (when (not (member "all-the-icons" (font-family-list)))
+         (all-the-icons-install-fonts)))
+        ((eq helm-icons-provider 'treemacs)
+         (require 'treemacs-themes)
+         (require 'treemacs-icons)
+         (treemacs--setup-icon-background-colors))))
+
 ;;;###autoload
 (defun helm-icons-enable ()
   "Enable `helm-icons'."
   (interactive)
   (advice-add 'helm-make-source :around #'helm-icons--make)
-  (treemacs--setup-icon-background-colors))
+  (helm-icons--setup))
 
 (provide 'helm-icons)
 ;;; helm-icons.el ends here
