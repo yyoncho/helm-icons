@@ -50,15 +50,22 @@
                  (const treemacs))
   :group 'helm)
 
-(defun helm-icons--get-icon (ext)
-  "Get icon for EXT."
+(defun helm-icons--get-icon (file)
+  "Get icon for FILE."
   (cond ((eq helm-icons-provider 'all-the-icons)
          (require 'all-the-icons)
-         (concat (all-the-icons-icon-for-file (concat "icon." ext)) " "))
+         (concat
+          (or (cond ((not file) (all-the-icons-octicon "gear"))
+                    ((or
+                      (member (f-base file) '("." ".."))
+                      (f-dir? file))
+                     (all-the-icons-octicon "file-directory")))
+              (all-the-icons-icon-for-file file))
+          " "))
         ((eq helm-icons-provider 'treemacs)
          (require 'treemacs-themes)
          (require 'treemacs-icons)
-         (treemacs-get-icon-value ext nil (treemacs-theme->name (treemacs-current-theme))))))
+         (treemacs-get-icon-value (f-ext file) nil (treemacs-theme->name (treemacs-current-theme))))))
 
 (defun helm-icons-buffers-add-icon (candidates _source)
   "Add icon to buffers source.
@@ -70,7 +77,6 @@ CANDIDATES is the list of candidates."
                             (cl-rest)
                             helm-icons--get-icon)
                        (-some->> (buffer-file-name)
-                         f-ext
                          helm-icons--get-icon)
                        (helm-icons--get-icon 'fallback)))
                  display)
@@ -85,8 +91,7 @@ CANDIDATES is the list of candidates."
                                            candidate
                                          (cons candidate candidate))]
             (cons (concat (cond
-                           ((f-dir? file-name) (helm-icons--get-icon 'dir-closed))
-                           ((helm-icons--get-icon (f-ext file-name)))
+                           ((helm-icons--get-icon file-name))
                            ((helm-icons--get-icon 'fallback)))
                           display)
                   file-name)))
