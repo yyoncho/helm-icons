@@ -44,7 +44,7 @@
   :type '(alist :key-type symbol :value-type sexp))
 
 (defcustom helm-icons-provider
-  'all-the-icons
+  'treemacs
   "Provider to load symbols from."
   :type '(choice (const all-the-icons)
                  (const treemacs))
@@ -53,8 +53,11 @@
 (defun helm-icons--get-icon (ext)
   "Get icon for EXT."
   (cond ((eq helm-icons-provider 'all-the-icons)
+         (require 'all-the-icons)
          (concat (all-the-icons-icon-for-file (concat "icon." ext)) " "))
         ((eq helm-icons-provider 'treemacs)
+         (require 'treemacs-themes)
+         (require 'treemacs-icons)
          (treemacs-get-icon-value ext nil (treemacs-theme->name (treemacs-current-theme))))))
 
 (defun helm-icons-buffers-add-icon (candidates _source)
