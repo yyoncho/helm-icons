@@ -5,9 +5,9 @@
 ** Configuration
 *** Melpa (TBD)
 *** Manual
-By default, the provider uses =all-the-icons=, so make sure that you have that
-in your load path. If you wish to use =treemacs= icons instead, set =helm-icons-provider=
-to ='treemacs=.
+By default, the provider uses =treemacs=, so make sure that you have that
+in your load path. If you wish to use =all-the-icons= icons instead, set =helm-icons-provider=
+to ='all-the-icons=.
 
 Make sure that you have =helm= and your icon provider installed, clone the repo
 and put it on your path. Make sure that the enable call is performed before
