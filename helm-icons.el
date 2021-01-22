@@ -46,7 +46,8 @@
 (defcustom helm-icons-provider
   'all-the-icons
   "Provider to load symbols from."
-  :type 'symbol
+  :type '(choice (const all-the-icons)
+                 (const treemacs))
   :group 'helm)
 
 (defun helm-icons--get-icon (ext)
