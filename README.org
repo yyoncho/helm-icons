@@ -1,24 +1,29 @@
 * helm icons
 
-  [[file:images/treemacs-icons.gif]]
+[[file:images/treemacs-icons.gif]]
 
 ** Configuration
 *** Melpa (TBD)
 *** Manual
-    Make sure that you have both =helm= and =treemacs= installed clone the repo
-    and put it on your path. Make sure that the enable call is performed before
-    loading =helm=.
+By default, the provider uses =treemacs=, so make sure that you have that
+in your load path. If you wish to use =all-the-icons= icons instead, set =helm-icons-provider=
+to ='all-the-icons=.
 
-    #+BEGIN_SRC emacs-lisp
-    (helm-icons-enable)
-    #+END_SRC
+Make sure that you have =helm= and your icon provider installed, clone the repo
+and put it on your path. Make sure that the enable call is performed before
+loading =helm=.
+
+#+BEGIN_SRC emacs-lisp
+(helm-icons-enable)
+#+END_SRC
+
+If you use =all-the-icons= and you haven't installed the fonts before, you will be prompted to do so.
+
 ** Supported commands:
-    - =helm-recentf=
-    - =helm-mini=
-    - =helm-find-file=
-    - =helm-buffers-list=
-    - =helm-locate=
-    - =helm-fasd=
-    - =helm-projectile-*=
-
-** all-the-icons (TBD)
+- =helm-recentf=
+- =helm-mini=
+- =helm-find-file=
+- =helm-buffers-list=
+- =helm-locate=
+- =helm-fasd=
+- =helm-projectile-*=
