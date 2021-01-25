@@ -65,7 +65,11 @@
         ((eq helm-icons-provider 'treemacs)
          (require 'treemacs-themes)
          (require 'treemacs-icons)
-         (treemacs-get-icon-value (f-ext file) nil (treemacs-theme->name (treemacs-current-theme))))))
+         (let ((icon (cond
+                      ((symbolp file) file)
+                      ((f-dir? file) 'dir-closed)
+                      ((f-file? file) (f-ext file)))))
+           (treemacs-get-icon-value icon nil (treemacs-theme->name (treemacs-current-theme)))))))
 
 (defun helm-icons-buffers-add-icon (candidates _source)
   "Add icon to buffers source.
