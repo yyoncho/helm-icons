@@ -32,6 +32,7 @@
 (require 'dash)
 (require 'seq)
 
+
 (defgroup helm-icons nil
   "Helm treemacs icons."
   :group 'helm)
@@ -50,6 +51,16 @@
                  (const treemacs))
   :group 'helm)
 
+(with-eval-after-load 'treemacs-icons
+  (defun helm-icons--treemacs-icon (file)
+    "docstring"
+    (let ((icon (cond
+                 ((symbolp file) file)
+                 ((f-dir? file) 'dir-closed)
+                 ((f-file? file) (f-ext file)))))
+      (treemacs-get-icon-value icon nil (treemacs-theme->name (treemacs-current-theme))))))
+
+
 (defun helm-icons--get-icon (file)
   "Get icon for FILE."
   (cond ((eq helm-icons-provider 'all-the-icons)
@@ -63,13 +74,9 @@
               (all-the-icons-icon-for-file file))
           " "))
         ((eq helm-icons-provider 'treemacs)
-         (require 'treemacs-themes)
          (require 'treemacs-icons)
-         (let ((icon (cond
-                      ((symbolp file) file)
-                      ((f-dir? file) 'dir-closed)
-                      ((f-file? file) (f-ext file)))))
-           (treemacs-get-icon-value icon nil (treemacs-theme->name (treemacs-current-theme)))))))
+         (require 'treemacs-themes)
+         (helm-icons--treemacs-icon file))))
 
 (defun helm-icons-buffers-add-icon (candidates _source)
   "Add icon to buffers source.
@@ -142,7 +149,7 @@ NAME, CLASS and ARGS are the original params."
   (cond ((eq helm-icons-provider 'all-the-icons)
          (require 'all-the-icons)
          (when (not (member "all-the-icons" (font-family-list)))
-         (all-the-icons-install-fonts)))
+           (all-the-icons-install-fonts)))
         ((eq helm-icons-provider 'treemacs)
          (require 'treemacs-themes)
          (require 'treemacs-icons)
