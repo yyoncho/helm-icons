@@ -147,9 +147,7 @@ NAME, CLASS and ARGS are the original params."
 (defun helm-icons--setup ()
   "Setup icons based on which provider is set."
   (cond ((eq helm-icons-provider 'all-the-icons)
-         (require 'all-the-icons)
-         (when (not (member "all-the-icons" (font-family-list)))
-           (all-the-icons-install-fonts)))
+         (require 'all-the-icons))
         ((eq helm-icons-provider 'treemacs)
          (require 'treemacs-themes)
          (require 'treemacs-icons)
