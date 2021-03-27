@@ -32,6 +32,9 @@
 (require 'dash)
 (require 'seq)
 (require 'f)
+(require 'treemacs-icons nil t)
+(require 'treemacs-themes nil t)
+(require 'all-the-icons nil t)
 
 (defgroup helm-icons nil
   "Helm treemacs icons."
@@ -77,8 +80,6 @@
               (all-the-icons-icon-for-file file))
           " "))
         ((eq helm-icons-provider 'treemacs)
-         (require 'treemacs-icons)
-         (require 'treemacs-themes)
          (helm-icons--treemacs-icon file))))
 
 (defun helm-icons-buffers-add-icon (candidates _source)
