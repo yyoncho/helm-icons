@@ -31,7 +31,7 @@
 
 (require 'dash)
 (require 'seq)
-
+(require 'f)
 
 (defgroup helm-icons nil
   "Helm treemacs icons."
