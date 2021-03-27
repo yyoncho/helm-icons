@@ -58,8 +58,11 @@
                  ((symbolp file) file)
                  ((f-dir? file) 'dir-closed)
                  ((f-file? file) (f-ext file)))))
-      (treemacs-get-icon-value icon nil (treemacs-theme->name (treemacs-current-theme))))))
-
+      (let* ((theme (treemacs--find-theme
+                     (treemacs-theme->name
+                      (treemacs-current-theme))))
+             (icons (treemacs-theme->gui-icons theme)))
+        (ht-get icons icon)))))
 
 (defun helm-icons--get-icon (file)
   "Get icon for FILE."
