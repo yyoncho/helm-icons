@@ -126,7 +126,7 @@ ORIG is the original function.
 NAME, CLASS and ARGS are the original params."
   (let ((result (apply orig name class args)))
     (cl-case class
-      ((helm-recentf-source helm-source-ffiles helm-locate-source helm-fasd-source)
+      ((helm-recentf-source helm-source-ffiles helm-locate-source helm-fasd-source helm-ls-git-source)
        (helm-icons-add-transformer
         #'helm-icons-files-add-icons
         result))
