@@ -32,6 +32,7 @@
 (require 'dash)
 (require 'seq)
 (require 'f)
+(require 'treemacs-faces nil t)
 (require 'treemacs-icons nil t)
 (require 'treemacs-themes nil t)
 (require 'all-the-icons nil t)
