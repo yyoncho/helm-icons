@@ -7,7 +7,8 @@
 *** Manual
 By default, the provider uses =treemacs=, so make sure that you have that
 in your load path. If you wish to use =all-the-icons= icons instead, set =helm-icons-provider=
-to ='all-the-icons=.
+to ='all-the-icons=. Or if you wish to use =nerd-icons= icons (which is usable in terminal,
+more information [[https://github.com/rainstormstudio/nerd-icons.el][here]]), set =helm-icons-provider= to ='nerd-icons=. 
 
 Make sure that you have =helm= and your icon provider installed, clone the repo
 and put it on your path. Make sure that the enable call is performed before
@@ -18,6 +19,13 @@ loading =helm=.
 #+END_SRC
 
 If you use =all-the-icons= and you haven't installed the fonts before, you will be prompted to do so.
+
+The following are images showing how it looks like when using with =nerd-icons=. Notice that
+the second is in konsole. 
+
+[[file:images/nerd-icons-gui.png]]
+
+[[file:images/nerd-icons-nw.png]]
 
 ** Supported commands:
 - =helm-recentf=
