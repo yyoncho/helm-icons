@@ -36,6 +36,7 @@
 (require 'treemacs-icons nil t)
 (require 'treemacs-themes nil t)
 (require 'all-the-icons nil t)
+(require 'nerd-icons nil t)
 
 (defgroup helm-icons nil
   "Helm treemacs icons."
@@ -52,6 +53,7 @@
   'treemacs
   "Provider to load symbols from."
   :type '(choice (const all-the-icons)
+                 (const nerd-icons)
                  (const treemacs))
   :group 'helm)
 
@@ -80,6 +82,16 @@
                      (all-the-icons-octicon "file-directory")))
               (all-the-icons-icon-for-file file))
           " "))
+        ((eq helm-icons-provider 'nerd-icons)
+         (require 'nerd-icons)
+         (concat
+          (or (cond ((not (stringp file)) (nerd-icons-octicon "nf-oct-gear"))
+                    ((or
+                      (member (f-base file) '("." ".."))
+                      (f-dir? file))
+                     (nerd-icons-octicon "nf-oct-file_directory")))
+              (nerd-icons-icon-for-file file))
+          " "))
         ((eq helm-icons-provider 'treemacs)
          (helm-icons--treemacs-icon file))))
 
@@ -92,6 +104,9 @@ use the provider."
            helm-icons--get-icon)
       (cond ((eq helm-icons-provider 'all-the-icons)
              (-let ((icon (all-the-icons-icon-for-mode mode)))
+               (when (stringp icon) (concat icon " "))))
+            ((eq helm-icons-provider 'nerd-icons)
+             (-let ((icon (nerd-icons-icon-for-mode mode)))
                (when (stringp icon) (concat icon " "))))
             (t nil))))
 
@@ -163,6 +178,8 @@ NAME, CLASS and ARGS are the original params."
   "Setup icons based on which provider is set."
   (cond ((eq helm-icons-provider 'all-the-icons)
          (require 'all-the-icons))
+        ((eq helm-icons-provider 'nerd-icons)
+         (require 'nerd-icons))
         ((eq helm-icons-provider 'treemacs)
          (require 'treemacs-themes)
          (require 'treemacs-icons)
