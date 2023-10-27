@@ -182,8 +182,7 @@ NAME, CLASS and ARGS are the original params."
          (require 'nerd-icons))
         ((eq helm-icons-provider 'treemacs)
          (require 'treemacs-themes)
-         (require 'treemacs-icons)
-         (treemacs--setup-icon-background-colors))))
+         (require 'treemacs-icons))))
 
 ;;;###autoload
 (defun helm-icons-enable ()
